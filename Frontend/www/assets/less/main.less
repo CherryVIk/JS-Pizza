@@ -1,3 +1,22 @@
-@mainColor: blue;
+@mainColor: #EA862E;
+@subColor: #c6c6c6;
+@bodyColor: rgb(255, 249, 202);
 
 @import "pizza/pizza-card";
+@import "pizza/nav";
+
+body	{
+  font-size:	20px;//Базовий розмір шрифту
+  background: @bodyColor;
+}
+@media	(max-width:	800px)	{
+  body	{
+    font-size:	15px;	//Розмір для екранів менше 800px
+  }
+}
+@media	(max-width:	400px)	{
+  body	{
+    font-size:	10px;	//Розмір для екранів менше 400px
+  }
+}
+
