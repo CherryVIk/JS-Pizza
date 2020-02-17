@@ -6,12 +6,18 @@
   border: 1px solid gainsboro;
 
   img {
-    max-width: 250px;//250px;
-    max-height: 250px;
+    max-width: 100%;//250px;
+    max-height: 100%;
     text-align: center;
 
   }
 
+  @media(max-width: 575px){
+    img {
+      max-width: 250px;//250px;
+      max-height: 250px;
+    }
+  }
   h3 {
     color: @mainColor;
     background-color: @mainColor opacity;
