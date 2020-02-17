@@ -3,8 +3,11 @@
   background: #fff;
   margin: 1%;
   padding: 3% ;
+  border: 1px solid gainsboro;
+
   img {
-    max-width: 250px;
+    max-width: 100%;//250px;
+    max-height: 100%;
     text-align: center;
 
   }
@@ -13,11 +16,17 @@
     color: @mainColor;
     background-color: @mainColor opacity;
     font-weight: 700;
+    padding-top: 3%;
+  }
+  h4 {
+    margin-bottom: 0;
+    margin-top: 5px;
   }
 
   h6 {
     color: @subColor;
   }
+
 
   .btn{
     background: @mainColor;
@@ -27,6 +36,9 @@
     background: #fff;
     color: @mainColor;
     border: 1px solid @mainColor ;
+  }
+  .row{
+    font-size: small ;
   }
 
 }
