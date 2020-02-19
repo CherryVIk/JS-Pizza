@@ -1,47 +1,76 @@
-@textColor:rgb(161, 161, 161);
+@textColor: rgb(161, 161, 161);
+@sideBarOffset: 30%;
+@media (max-width: 800px) {
+  @sideBarOffset: 40%;
+}
+
+@media (max-width: 400px) {
+  @sideBarOffset: 50%;
+}
+
+#main{
+  margin-right: @sideBarOffset;
+}
+
 #navigation-bar {
+  margin-right: @sideBarOffset;
   background: rgba(0, 0, 0, 0.62);
 }
+#mySidenav {
+  width: @sideBarOffset;
+}
+
 .navbar {
   border-radius: 0;
   color: @textColor;
 }
 
-.sign-in{
-  color:white;
+.sign-in {
+  color: white;
 }
 
 .contain {
   width: 100%;
   font-size: smaller;
 }
-.upper-container{
+
+.upper-container {
   width: 100%;
   // border-bottom: 1px solid @textColor;
 }
-.lower-container{
+
+.lower-container {
   color: white;
 }
 
-.sidebtn{
+.sidebtn {
   position: fixed;
   bottom: 20px;
-  right:0;
+  right: 0;
   width: auto;
 }
 
 /* The side navigation menu */
 .sidenav {
-  height: 100%; /* 100% Full-height */
-  width: 0; /* 0 width - change this with JavaScript */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Stay on top */
-  top: 0; /* Stay at the top */
+  height: 100%;
+  /* 100% Full-height */
+  width: 0;
+  /* 0 width - change this with JavaScript */
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Stay on top */
+  top: 0;
+  /* Stay at the top */
   right: 0;
-  background-color: #111; /* Black*/
-  overflow-x: hidden; /* Disable horizontal scroll */
-  padding-top: 60px; /* Place content 60px from the top */
-  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  background-color: #fff;
+  /* Black*/
+  overflow-x: hidden;
+  /* Disable horizontal scroll */
+  padding-top: 60px;
+  /* Place content 60px from the top */
+  transition: 0.5s;
+  /* 0.5 second transition effect to slide in the sidenav */
 }
 
 /* The navigation menu links */
@@ -75,7 +104,12 @@
 }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
+@media (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+
+  .sidenav a {
+    font-size: 18px;
+  }
 }

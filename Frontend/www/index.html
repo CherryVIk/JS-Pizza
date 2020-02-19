@@ -14,34 +14,35 @@
 
     <script>
         /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
-        function openNav() {
-            document.getElementById("mySidenav").style.width = "25%";
-            document.getElementById("main").style.marginRight = "25%";
-        }
+        // function openNav() {
+        //     document.getElementById("mySidenav").style.width = "30%";
+        //     document.getElementById("main").style.marginRight = "30%";
+        //     document.getElementById("navigation-bar").style.marginRight = "30%";
+        // }
 
-        /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-            document.getElementById("main").style.marginRight = "0";
-        }
+        // /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
+        // function closeNav() {
+        //     document.getElementById("mySidenav").style.width = "0";
+        //     document.getElementById("main").style.marginRight = "0";
+        //     document.getElementById("navigation-bar").style.marginRight = "0";
+        // }
     </script>
 
 </head>
 
 <body>
     <!-- sidebar -->
-    <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Clients</a>
-        <a href="#">Contact</a>
+    <div id="mySidenav" class="sidenav shadow-lg">
+        <div class="order-header">Order</div>
+        <div class="order-main">Components</div>
+        <div class="order-sum">Sum</div>
+        <!-- <a href="javascript:void(0)" class="closebtn" onclick="">&times;</a> -->
     </div>
     <!-- /sidebar -->
     <div id="main">
         <!-- element to open the sidenav -->
-        <button type="button" class="btn btn-primary zbtn-sm sidebtn" onclick="openNav()">
-            <span class="glyphicon glyphicon-shopping-cart"></span> ShopCart</button>
+        <!-- <button type="button" class="btn btn-primary zbtn-sm sidebtn" onclick="openNav()">
+            <span class="glyphicon glyphicon-shopping-cart"></span> ShopCart</button> -->
 
         <nav class="navbar navbar-expand navbar-dark fixed-top shadow" id="navigation-bar">
             <a class="navbar-brand" href="#">PizzaKMA</a>
