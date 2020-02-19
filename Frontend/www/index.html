@@ -12,6 +12,19 @@
     <!-- LESS JavaScript компілятор -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.3/less.min.js"></script>
 
+    <script>
+        /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "25%";
+            document.getElementById("main").style.marginRight = "25%";
+        }
+
+        /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("main").style.marginRight = "0";
+        }
+    </script>
 
 </head>
 
@@ -24,12 +37,12 @@
         <a href="#">Clients</a>
         <a href="#">Contact</a>
     </div>
-    <button type="button" class="btn btn-primary zbtn-sm sidebtn" onclick="openNav()">
-        <span class="glyphicon glyphicon-shopping-cart"></span> ShopCart</button>
-    <!-- Use any element to open the sidenav -->
-
     <!-- /sidebar -->
     <div id="main">
+        <!-- element to open the sidenav -->
+        <button type="button" class="btn btn-primary zbtn-sm sidebtn" onclick="openNav()">
+            <span class="glyphicon glyphicon-shopping-cart"></span> ShopCart</button>
+
         <nav class="navbar navbar-expand navbar-dark fixed-top shadow" id="navigation-bar">
             <a class="navbar-brand" href="#">PizzaKMA</a>
             <div class="contain m-auto">
@@ -275,7 +288,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
     <!--Own JavaScript -->
-    <script type="text/javascript"  src="assets/js/main.js"> </script>
+    <!-- <script type="text/javascript"  src="assets/js/main.js"> </script> -->
 </body>
 
 </html>
