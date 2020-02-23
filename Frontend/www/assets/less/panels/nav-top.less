@@ -1,0 +1,53 @@
+@textColor: #a1a1a1;
+
+.navigation-bar {
+  margin-right: @sideBarWidth;
+  width:100%;
+  height: @navBarHeight;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(12, 6, 1, 0.8);
+
+  .contain{
+    width: 100%;
+    height: 100%;
+    margin-left: 130px;
+    padding-right: @sideBarWidth/2;
+
+    .upper-container{
+      height: @navBarHeight/2;
+      border-bottom: 1px solid @textColor;
+      color: @textColor;
+
+      .phone{
+        font-size: 20px;
+        padding: 5px 30px 5px 5px;
+      }
+      .working-hours{
+        font-size: 12px;
+        padding-right: 30px;
+      }
+      .delivery {
+        font-size: 16px;
+        padding-right: 30px;
+      }
+      .sign-in {
+        margin-top: 3px;
+        float: right;
+        color: #fff;
+      }
+    }
+    .lower-container {
+      height: @navBarHeight/2;
+      color: @textColor;
+      padding-top: 5px;
+      .pizza-page {
+        font-size: 16px;
+        color: white;
+      }
+    }
+  }
+}
+
