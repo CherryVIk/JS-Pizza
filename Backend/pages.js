@@ -3,12 +3,12 @@
  */
 exports.mainPage = function(req, res) {
     res.render('mainPage', {
-        pageTitle: 'Pizza choise'
+        pageTitle: 'Pizza choice'
     });
 };
 
 exports.orderPage = function(req, res) {
     res.render('orderPage', {
-        pageTitle: 'Order is confirmed'
+        pageTitle: 'Confirming order'
     });
 };
