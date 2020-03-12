@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order</title>
+    <!-- Bootsrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <!-- LESS основний файл -->
+    <link rel="stylesheet/less" type="text/css" href="assets/less/main.less" />
+    <!-- LESS JavaScript компілятор -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.3/less.min.js"></script>
+</head>
+<body>
+<div class="main-order-container">
+    <div class="contact-form">
+        <div class="form-description">
+            1. Contacts
+        </div>
+        <div class="row">
+            <div class="col-md-7">
+                <div class="form-horizontal">
+                    <div class="form-group name-group">
+                        <label class="col-sm-2 control-label">Name</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" id="inputName" placeholder="Ім’я Прізвище">
+                        </div>
+                        <span class="help-block name-help-block" style="display:none">Enter name (no numbers and other symbols)</span>
+                    </div>
+                    <div class="form-group phone-group">
+                        <label class="col-sm-2 control-label">Telephone</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" id="inputPhone" placeholder="+38 000 000 00 00">
+                        </div>
+                        <span class="help-block phone-help-block" style="display:none">Enter number starting with +380 or 0</span>
+                    </div>
+                    <div class="form-group address-group">
+                        <label class="col-sm-2 control-label">Address</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" id="inputAddress"
+                                   placeholder="Київ, вул. Григорія Сковороди, 8">
+                        </div>
+                        <span class="help-block address-help-block" style="display:none">Enter address for delivering pizza</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7 order-summary">
+                <div class="bs-callout bs-call-out-warning">
+                    <h4>Інформація про замовлення</h4>
+                    <p>
+                        <b>Приблизний час доставки: </b>
+                        <span class="order-time">невідомий</span>
+                    </p>
+
+                    <p>
+                        <b>Адреса доставки: </b>
+                        <span class="order-adress">невідома</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group next-step-wrap">
+                <div class="next-step-width">
+                    <button type="button" class="btn btn-warning btn-block next-step-button">
+                        Далі
+                        <i class="glyphicon glyphicon-chevron-right icon-white">
+                        </i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="googleMaps" class="google-maps" style="position: relative; overflow: hidden"></div>
+    <!-- місце для віджету -->
+    <div id="liqpay"></div>
+</div>
+<!-- jQuery JavaScript -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"> </script>
+
+<!--Bootstrap JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!--Own JavaScript -->
+<script type="text/javascript"  src="assets/js/main.js"> </script>
+</body>
+</html>

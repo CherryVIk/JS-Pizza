@@ -7,6 +7,14 @@ var Pizza_List = require('../Pizza_List');
 
 //HTML едемент куди будуть додаватися піци
 var $pizza_list = $("#pizza_list");
+var PizzaFilter = {
+    All: 0,
+    Meat: 1,
+    Pineapple: 2,
+    Mushroom: 3,
+    Sea: 4,
+    Veg: 5
+}
 
 function showPizzaList(list) {
     //Очищаємо старі піци в кошику
@@ -35,12 +43,48 @@ function filterPizza(filter) {
     //Масив куди потраплять піци які треба показати
     var pizza_shown = [];
 
-    Pizza_List.forEach(function(pizza){
-        //Якщо піка відповідає фільтру
-        //pizza_shown.push(pizza);
+    if(filter === PizzaFilter.All){
+        Pizza_List.forEach(function(pizza){
+            pizza_shown.push(pizza);
+        });
+        $(".all-pizza-title").text("All pizzas");
+        $(".pizza-count").text("8");
+    }
+    else {
+        if (filter === PizzaFilter.Mushroom) {
+            Pizza_List.forEach(function (pizza) {
+                //Якщо піка відповідає фільтру
+                if (pizza.content.mushroom) pizza_shown.push(pizza);
+            });
+            $(".all-pizza-title").text("Mushroom pizzas");
+        } else if (filter === PizzaFilter.Meat) {
+            Pizza_List.forEach(function (pizza) {
+                //Якщо піка відповідає фільтру
+                if (pizza.type ===  'М’ясна піца') pizza_shown.push(pizza);
+            });
+            $(".all-pizza-title").text("Meat pizzas");
+        } else if (filter === PizzaFilter.Pineapple) {
+            Pizza_List.forEach(function (pizza) {
+                //Якщо піка відповідає фільтру
+                if (pizza.content.pineapple) pizza_shown.push(pizza);
+            });
+            $(".all-pizza-title").text("Pineapple pizzas");
+        } else if (filter === PizzaFilter.Sea) {
+            Pizza_List.forEach(function (pizza) {
+                //Якщо піка відповідає фільтру
+                if (pizza.content.ocean) pizza_shown.push(pizza);
+            });
+            $(".all-pizza-title").text("Sea pizzas");
+        } else if (filter === PizzaFilter.Veg) {
+            Pizza_List.forEach(function (pizza) {
+                //Якщо піка відповідає фільтру
+                if (pizza.type ===  'Вега піца') pizza_shown.push(pizza);
+            });
+            $(".all-pizza-title").text("Vegan pizzas");
+        }
+        $(".pizza-count").text(pizza_shown.length);
 
-        //TODO: зробити фільтри
-    });
+    }
 
     //Показати відфільтровані піци
     showPizzaList(pizza_shown);
