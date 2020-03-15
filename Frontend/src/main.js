@@ -24,13 +24,13 @@ $(function(){
     });
 
     $(".next-step-button").click(function () {
-        if ($("#inputName").val() === "") {
+        if (!valName()) {
             $(".name-help-block").show();
         } else $(".name-help-block").hide();
-        if ($("#inputPhone").val() === "") {
+        if (!valPhone()) {
             $(".phone-help-block").show();
         } else $(".phone-help-block").hide();
-        if ($("#inputAddress").val() === "") {
+        if (!valAddress()) {
             $(".address-help-block").show();
         } else $(".address-help-block").hide();
     });

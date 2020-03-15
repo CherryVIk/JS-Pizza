@@ -11,69 +11,150 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.3/less.min.js"></script>
 </head>
 <body>
-<div class="main-order-container">
-    <div class="contact-form">
-        <div class="form-description">
-            1. Contacts
-        </div>
-        <div class="row">
-            <div class="col-md-7">
-                <div class="form-horizontal">
-                    <div class="form-group name-group">
-                        <label class="col-sm-2 control-label">Name</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" type="text" id="inputName" placeholder="Ім’я Прізвище">
-                        </div>
-                        <span class="help-block name-help-block" style="display:none">Enter name (no numbers and other symbols)</span>
-                    </div>
-                    <div class="form-group phone-group">
-                        <label class="col-sm-2 control-label">Telephone</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" type="text" id="inputPhone" placeholder="+38 000 000 00 00">
-                        </div>
-                        <span class="help-block phone-help-block" style="display:none">Enter number starting with +380 or 0</span>
-                    </div>
-                    <div class="form-group address-group">
-                        <label class="col-sm-2 control-label">Address</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" type="text" id="inputAddress"
-                                   placeholder="Київ, вул. Григорія Сковороди, 8">
-                        </div>
-                        <span class="help-block address-help-block" style="display:none">Enter address for delivering pizza</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-7 order-summary">
-                <div class="bs-callout bs-call-out-warning">
-                    <h4>Інформація про замовлення</h4>
-                    <p>
-                        <b>Приблизний час доставки: </b>
-                        <span class="order-time">невідомий</span>
-                    </p>
+<div class="pizza-main">
 
-                    <p>
-                        <b>Адреса доставки: </b>
-                        <span class="order-adress">невідома</span>
-                    </p>
+    <div class="discount-panel">
+        <div class="discount-before"></div>
+        <div class="discount-title">
+            ЦЬОГО ТИЖНЯ
+            <br>
+            НА ВСЕ
+        </div>
+        <div class="discount-text">-30%</div>
+    </div>
+    <div class="top-badge">
+        <div class="badge-before"></div>
+        <div class="badge-title">
+            PIZZA
+            <br>
+            KMA
+        </div>
+    </div>
+    <div class="main-order-container">
+        <div class="contact-form">
+            <div class="form-description">
+                1. Contacts
+            </div>
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="form-horizontal">
+                        <div class="form-group name-group">
+                            <label class="col-sm-2 control-label">Name</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" id="inputName" placeholder="Ім’я Прізвище">
+                            </div>
+                            <span class="help-block name-help-block" style="display:none">Enter name (no numbers and other symbols)</span>
+                        </div>
+                        <div class="form-group phone-group">
+                            <label class="col-sm-2 control-label">Telephone</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" id="inputPhone" placeholder="+38 000 000 00 00">
+                            </div>
+                            <span class="help-block phone-help-block" style="display:none">Enter number starting with +380 or 0</span>
+                        </div>
+                        <div class="form-group address-group">
+                            <label class="col-sm-2 control-label">Address</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" id="inputAddress"
+                                       placeholder="Київ, вул. Григорія Сковороди, 8">
+                            </div>
+                            <span class="help-block address-help-block" style="display:none">Enter address for delivering pizza</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7 order-summary">
+                    <div class="bs-callout bs-call-out-warning">
+                        <h4>Інформація про замовлення</h4>
+                        <p>
+                            <b>Приблизний час доставки: </b>
+                            <span class="order-time">невідомий</span>
+                        </p>
+
+                        <p>
+                            <b>Адреса доставки: </b>
+                            <span class="order-adress">невідома</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group next-step-wrap">
+                    <div class="next-step-width">
+                        <button type="button" class="btn btn-warning btn-block next-step-button">
+                            Далі
+                            <i class="glyphicon glyphicon-chevron-right icon-white">
+                            </i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="form-group next-step-wrap">
-                <div class="next-step-width">
-                    <button type="button" class="btn btn-warning btn-block next-step-button">
-                        Далі
-                        <i class="glyphicon glyphicon-chevron-right icon-white">
-                        </i>
+        <div id="googleMaps" class="google-maps" style="position: relative; overflow: hidden"></div>
+        <!-- місце для віджету -->
+        <div id="liqpay"></div>
+    </div>
+    <div class="nav-bar">
+        <div class="contain">
+            <div class="upper-container">
+                <div class="up-item phone visible-sm-inline-block ">
+                    (044) 222 5 222
+                </div>
+                <div class="up-item working-hours visible-lg-inline-block visible-md-inline-block">
+                    24 години/ 7 днів на тиждень
+                </div>
+                <div class="up-item delivery visible-lg-inline-block">
+                    Безкоштовна доставка піци
+                </div>
+                <span class="btn-sm btn-warning sign-in hidden-xs"> Sign in</span>
+            </div>
+            <div class="lower-container">
+                <span class="pizza-page hidden-xs">Піца</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- sidebar -->
+    <div class="right-panel">
+        <div class="center-part" id = "cart">
+            <div class="order-one ng-scope"></div>
+        </div>
+        <div class="top-part">
+            <div class="top-order-title">
+            <span class="order-list-title">
+                Order
+                <span class="badge orange order-count">0</span>
+            </span>
+            </div>
+        </div>
+        <div class="bottom-part">
+            <div class="order-state">
+            <span class="sum-title">
+                Sum of order
+            </span>
+                <span class="sum-number">
+                0 uah.
+            </span>
+                <div class="do-order-button">
+                    <button type="button" class="btn btn-warning btn-lg btn-block button-edit-order"
+                            onclick="window.location.href='index.html'">
+                        Edit order
                     </button>
                 </div>
             </div>
         </div>
     </div>
-    <div id="googleMaps" class="google-maps" style="position: relative; overflow: hidden"></div>
-    <!-- місце для віджету -->
-    <div id="liqpay"></div>
+
+    <footer class="bottom-bar">
+        <p>
+            © 2020 PizzaKMA<br>
+            This is a project for "ProgrammingJS" course in National university "Kyiv-Mohyla academy"
+        </p>
+        <p>
+            No delivery is available
+        </p>
+    </footer>
 </div>
+
 <!-- jQuery JavaScript -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"> </script>
 
