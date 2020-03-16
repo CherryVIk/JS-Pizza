@@ -1,25 +1,25 @@
 var old_marker = null;
-var gmap = null;
+var map;
 
 function initialize() {
 //Тут починаємо працювати з картою
     var mapProp = {
         center: new google.maps.LatLng(50.464379, 30.519131),
-        zoom: 15
+        zoom: 11
     };
     var html_element = document.getElementById("googleMaps");
-    gmap = new google.maps.Map(html_element, mapProp);
+    map = new google.maps.Map(html_element, mapProp);
 
     //show shop marker
     var point = new google.maps.LatLng(50.464379, 30.519131);
     var shopMarker = new google.maps.Marker({
         position: point,
-        map: gmap,
+        map: map,
         icon: "assets/images/map-icon.png"
     });
     //Карта створена і показана
 
-    google.maps.event.addListener(gmap, 'click', function (me) {
+    google.maps.event.addListener(map, 'click', function (me) {
         var coordinates = me.latLng; //coordinates	- такий самий об’єкт як створений new google.maps.LatLng(...)
         updateMarker(coordinates);
 
@@ -30,7 +30,7 @@ function initialize() {
             } else {
                 $(".order-adress").text("No address");
             }
-        })
+        });
 
         calculateRoute(point, coordinates, function (err, data) {
             if(!err){
@@ -77,7 +77,7 @@ function updateMarker(coordinates) {
 
     old_marker = new google.maps.Marker({
         position: coordinates,
-        map: gmap,
+        map: map,
         icon: "assets/images/home-icon.png"
     });
 }

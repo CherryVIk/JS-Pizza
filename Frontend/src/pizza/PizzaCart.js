@@ -172,5 +172,5 @@ exports.getPizzaInCart = getPizzaInCart;
 exports.initialiseCart = initialiseCart;
 exports.createOrder = createOrder;
 
-exports.clearCart = clearCart();
+exports.clearCart = clearCart;
 exports.PizzaSize = PizzaSize;

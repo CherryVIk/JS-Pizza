@@ -2,9 +2,11 @@
  * Created by chaika on 09.02.16.
  */
 var Pizza_List = require('./data/Pizza_List');
-//TODO enter correct data
-var LIQPAY_PUBLIC_KEY = 0;
-var LIQPAY_PRIVATE_KEY = 0;
+//That's real, lower ones are for testing
+// var LIQPAY_PUBLIC_KEY = i22365309913;
+// var LIQPAY_PRIVATE_KEY = Eb7QpuOd0So58cHKihQznNF5HLVbmwKd7t7Y0YSC;
+var LIQPAY_PUBLIC_KEY = sandbox_i31232987498;
+var LIQPAY_PRIVATE_KEY = sandbox_h3RU6oc0zRHGvRZFtFelxSSIIEBM0IXJSfvbdGU4;
 
 var crypto = require('crypto');
 

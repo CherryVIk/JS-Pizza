@@ -1,7 +1,8 @@
 var PizzaMenu = require('./pizza/PizzaMenu');
 var PizzaCart = require('./pizza/PizzaCart');
-var Pizza_List = require('./Pizza_List');
 var Storage = require('./pizza/Storage');
+// var GoogleMaps = require('./googleMaps');
+
 var contact_info = {
     name: "",
     phone: "",
@@ -26,9 +27,6 @@ function initialiseOrder(){
     }
 }
 
-
-
-
 $(".nav-pills li").on("click", function () {
     $(".nav-pills li").removeClass("active");
     $(this).addClass("active");
@@ -36,7 +34,7 @@ $(".nav-pills li").on("click", function () {
     PizzaMenu.filterPizza(filt);
 })
 
-$(".clear-cart").click(function () {
+$(".clear-order").click(function () {
     PizzaCart.clearCart();
 });
 
@@ -45,7 +43,10 @@ $("#inputName").on("input", function () {
         $(".name-help-block").show();
     } else {
         $(".name-help-block").hide();
+        contact_info.name = $("#inputName").val();
+        Storage.write("info", contact_info);
     }
+
 });
 
 $("#inputPhone").on("input", function () {
@@ -53,7 +54,10 @@ $("#inputPhone").on("input", function () {
         $(".phone-help-block").show();
     } else {
         $(".phone-help-block").hide();
+        contact_info.phone = $("#inputPhone").val();
+        Storage.write("info", contact_info);
     }
+
 });
 
 $("#inputAddress").on("input", function () {
@@ -74,20 +78,22 @@ $("#inputAddress").on("input", function () {
                             $(".order-time").text(data.duration.text);
                         } else {
                             $(".order-time").text("Помилка");
+                            console.log(err);
                         }
-                    })
+                    });
+                    contact_info.address = $("#inputAddress").val();
+                    Storage.write("info", contact_info);
                 } else {
                     $(".order-adress").text("Немає адреси");
                 }
             });
         }
     });
-
-
 });
 
 function nameValid() {
     var expr = $("#inputName").val();
+    // return expr.match(/^[0-9A-Za-zА-Яа-яІіЇїЄєҐґ'/ -]+$/);
     return expr.match(/^([a-zA-Zа-яА-Я]+|[a-zA-Zа-яА-Я]+[ ][a-zA-Zа-яА-Я]+|([a-zA-Zа-яА-Я]+[\-][a-zA-Zа-яА-Я]+))+$/);
 }
 
@@ -101,6 +107,8 @@ function addressValid() {
         $(".address-help-block").show();
         return false
     } else $(".address-help-block").hide();
+    contact_info.address = $("#inputAddress").val();
+    Storage.write("info", contact_info);
     return true;
 }
 
@@ -117,11 +125,6 @@ $(".next-step-button").click(function () {
 
     if (nameValid() && phoneValid() && addressValid()) {
 
-        contact_info.name = $("#inputName").val();
-        contact_info.phone = $("#inputPhone").val();
-        contact_info.address = $("#inputAddress").val();
-        Storage.write("info", contact_info);
-
         PizzaCart.createOrder(function (err, data) {
             if (err) {
                 return alert("Can't create order");
@@ -132,7 +135,7 @@ $(".next-step-button").click(function () {
                 data: data.data,
                 signature: data.signature,
                 embedTo: "#liqpay",
-                mode: "embed"	//	popup	||	popup
+                mode: "popup"	//	embed	||	popup
             }).on("liqpay.callback", function (data) {
                 console.log(data.status);
                 console.log(data);
