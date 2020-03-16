@@ -41,6 +41,155 @@ exports.createOrder = function(order_info, callback) {
 };
 
 },{}],2:[function(require,module,exports){
+var PizzaMenu = require('./pizza/PizzaMenu');
+var PizzaCart = require('./pizza/PizzaCart');
+var Pizza_List = require('./Pizza_List');
+var Storage = require('./pizza/Storage');
+var contact_info = {
+    name: "",
+    phone: "",
+    address: ""
+};
+
+function initialiseOrder(){
+    var contact_info = Storage.read("info");
+    if (contact_info) {
+        if (contact_info.name) {
+            $("#inputName").val(contact_info.name);
+            nameValid();
+        }
+        if (contact_info.phone) {
+            $("#inputPhone").val(contact_info.phone);
+            phoneValid();
+        }
+        if (contact_info.address) {
+            $("#inputAddress").val(contact_info.address);
+            addressValid();
+        }
+    }
+}
+
+
+
+
+$(".nav-pills li").on("click", function () {
+    $(".nav-pills li").removeClass("active");
+    $(this).addClass("active");
+    var filt = $(this).find('a').data("filter");
+    PizzaMenu.filterPizza(filt);
+})
+
+$(".clear-cart").click(function () {
+    PizzaCart.clearCart();
+});
+
+$("#inputName").on("input", function () {
+    if (!nameValid()) {
+        $(".name-help-block").show();
+    } else {
+        $(".name-help-block").hide();
+    }
+});
+
+$("#inputPhone").on("input", function () {
+    if (!phoneValid()) {
+        $(".phone-help-block").show();
+    } else {
+        $(".phone-help-block").hide();
+    }
+});
+
+$("#inputAddress").on("input", function () {
+    if (!addressValid()) {
+        $(".address-help-block").show();
+    } else {
+        $(".address-help-block").hide();
+    }
+
+    googleMaps.geocodeAddress($("#inputAddress").val(), function (err, coordinates) {
+        if (!err) {
+            googleMaps.geocodeLatLng(coordinates, function (err, address) {
+                if (!err) {
+                    $(".order-adress").text($("#inputAddress").val());
+                    googleMaps.updateMarker(coordinates);
+                    googleMaps.calculateRoute(new google.maps.LatLng(50.464379, 30.519131), coordinates, function (err, data) {
+                        if (!err) {
+                            $(".order-time").text(data.duration.text);
+                        } else {
+                            $(".order-time").text("Помилка");
+                        }
+                    })
+                } else {
+                    $(".order-adress").text("Немає адреси");
+                }
+            });
+        }
+    });
+
+
+});
+
+function nameValid() {
+    var expr = $("#inputName").val();
+    return expr.match(/^([a-zA-Zа-яА-Я]+|[a-zA-Zа-яА-Я]+[ ][a-zA-Zа-яА-Я]+|([a-zA-Zа-яА-Я]+[\-][a-zA-Zа-яА-Я]+))+$/);
+}
+
+function phoneValid() {
+    var expr = $("#inputPhone").val();
+    return expr.match(/^(\+380\d{9}|0\d{9})$/);
+}
+
+function addressValid() {
+    if ($("#inputAddress").val() === "") {
+        $(".address-help-block").show();
+        return false
+    } else $(".address-help-block").hide();
+    return true;
+}
+
+$(".next-step-button").click(function () {
+    if (!nameValid()) {
+        $(".name-help-block").show();
+    } else $(".name-help-block").hide();
+    if (!phoneValid()) {
+        $(".phone-help-block").show();
+    } else $(".phone-help-block").hide();
+    if (!addressValid()) {
+        $(".address-help-block").show();
+    } else $(".address-help-block").hide();
+
+    if (nameValid() && phoneValid() && addressValid()) {
+
+        contact_info.name = $("#inputName").val();
+        contact_info.phone = $("#inputPhone").val();
+        contact_info.address = $("#inputAddress").val();
+        Storage.write("info", contact_info);
+
+        PizzaCart.createOrder(function (err, data) {
+            if (err) {
+                return alert("Can't create order");
+            }
+            alert("Order created");
+
+            LiqPayCheckout.init({
+                data: data.data,
+                signature: data.signature,
+                embedTo: "#liqpay",
+                mode: "embed"	//	popup	||	popup
+            }).on("liqpay.callback", function (data) {
+                console.log(data.status);
+                console.log(data);
+                alert("Order status: " + data.status);
+            }).on("liqpay.ready", function (data) {
+                //	ready
+            }).on("liqpay.close", function (data) {
+                //	close
+            });
+        });
+    }
+});
+exports.initialiseOrder = initialiseOrder;
+},{"./Pizza_List":3,"./pizza/PizzaCart":6,"./pizza/PizzaMenu":7,"./pizza/Storage":8}],3:[function(require,module,exports){
 /**
  * Created by diana on 12.01.16.
  */
@@ -218,7 +367,7 @@ var pizza_info = [
 ];
 
 module.exports = pizza_info;
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -230,137 +379,24 @@ exports.PizzaMenu_OneItem = ejs.compile("<%\n\nfunction getIngredientsArray(pizz
 exports.PizzaCart_OneItemSubmit = ejs.compile("<div class=\"order-one ng-scope\">\n    <img class=\"img-aside pizza-icon\" alt=\"Pizza\" src=\"<%= pizza.icon %>\">\n\n    <p class=\"bold mb10 ng-scope\">\n        <% if(pizza[size].size === 30){ %>\n            <span class=\"order-title\"><%= pizza.title %> (Small)</span>\n        <% }else { %>\n            <span class=\"order-title\"><%= pizza.title %> (Big)</span>\n        <% } %>\n    </p>\n    <div class=\"order-text\">\n        <img class=\"diagonal-image\" src=\"assets/images/size-icon.svg\">\n        <span class=\"diagonal\"><%= pizza[size].size %></span>\n        <img class=\"gram-image\" src=\"assets/images/weight.svg\">\n        <span class=\"gram\"><%= pizza[size].weight %></span>\n    </div>\n    <div class=\"price-box\">\n        <span class=\"price\"><%= pizza[size].price*quantity%>  uah.</span>\n\n        <span class=\"label order-pizza-count\" style=\"color:black;\">amount: <%= quantity %> </span>\n\n    </div>\n</div>");
 exports.PizzaCart_OneItem = ejs.compile("\n<div class=\"order-one ng-scope\">\n    <img class=\"img-aside pizza-icon\" alt=\"Піца\" src=\"<%= pizza.icon %>\">\n\n    <p class=\"bold mb10 ng-scope\">\n        <% if(pizza[size].size === 30){ %>\n            <span class=\"order-title\"><%= pizza.title %> (Small)</span>\n        <% }else { %>\n            <span class=\"order-title\"><%= pizza.title %> (Big)</span>\n        <% } %>\n    </p>\n    <div class=\"order-text\">\n        <img class=\"diagonal-image\" src=\"assets/images/size-icon.svg\">\n        <span class=\"diagonal\"><%= pizza[size].size %></span>\n        <img class=\"gram-image\" src=\"assets/images/weight.svg\">\n        <span class=\"gram\"><%= pizza[size].weight %></span>\n    </div>\n    <div class=\"price-box\">\n        <span class=\"price\"><%= pizza[size].price*quantity%>  uah.</span>\n        <a class=\"minus btn btn-xs btn-danger btn-circle\">\n            <i class=\"glyphicon glyphicon-minus icon-white\">\n            </i>\n        </a>\n        <span class=\"label order-pizza-count\" style=\"color:black;\"><%= quantity %></span>\n        <a class=\"plus btn btn-xs btn-success btn-circle\" >\n            <i class=\"glyphicon glyphicon-plus icon-white\">\n            </i>\n        </a>\n        <a class=\"count-clear btn btn-xs btn-default btn-circle\" >\n            <i class=\"glyphicon glyphicon-remove icon-white\">\n            </i>\n        </a>\n    </div>\n</div>");
 
-},{"ejs":10}],4:[function(require,module,exports){
+},{"ejs":11}],5:[function(require,module,exports){
 /**
  * Created by chaika on 25.01.16.
  */
 
-$(function(){
+$(function() {
     //This code will execute when the page is ready
     var PizzaMenu = require('./pizza/PizzaMenu');
     var PizzaCart = require('./pizza/PizzaCart');
-    var Pizza_List = require('./Pizza_List');
+    var Order = require('./Order');
 
     PizzaCart.initialiseCart();
     PizzaMenu.initialiseMenu();
-
-
-    $(".nav-pills li").on("click", function () {
-        $(".nav-pills li").removeClass("active");
-        $(this).addClass("active");
-        var filt = $(this).find('a').data("filter");
-        PizzaMenu.filterPizza(filt);
-    })
-
-    $(".clear-cart").click(function () {
-        PizzaCart.clearCart();
-    });
-
-    $(".next-step-button").click(function () {
-        if (!valName()) {
-            $(".name-help-block").show();
-        } else $(".name-help-block").hide();
-        if (!valPhone()) {
-            $(".phone-help-block").show();
-        } else $(".phone-help-block").hide();
-        if (!valAddress()) {
-            $(".address-help-block").show();
-        } else $(".address-help-block").hide();
-    });
-
-    $("#inputName").on("input", function () {
-        if (!valName()) {
-            $(".name-help-block").show();
-        } else {
-            $(".name-help-block").hide();
-        }
-    });
-
-    $("#inputPhone").on("input", function () {
-        if (!valPhone()) {
-            $(".phone-help-block").show();
-        } else {
-            $(".phone-help-block").hide();
-        }
-    });
-
-    $("#inputAddress").on("input", function () {
-        if (!valAddress()) {
-            $(".address-help-block").show();
-        } else {
-            $(".address-help-block").hide();
-        }
-
-        googleMaps.geocodeAddress($("#inputAddress").val(), function (err, coordinates) {
-            if (!err) {
-                googleMaps.geocodeLatLng(coordinates, function (err, address) {
-                    if (!err) {
-                        $(".order-adress").text($("#inputAddress").val());
-                        googleMaps.updateMarker(coordinates);
-                        googleMaps.calculateRoute(new google.maps.LatLng(50.464379, 30.519131), coordinates, function (err, data) {
-                            if (!err) {
-                                $(".order-time").text(data.duration.text);
-                            } else {
-                                $(".order-time").text("Помилка");
-                            }
-                        })
-                    } else {
-                        $(".order-adress").text("Немає адреси");
-                    }
-                });
-            }
-        });
-
-
-    });
-
-    function valName() {
-        var expr = $("#inputName").val();
-        return expr.match(/^([a-zA-Zа-яА-Я]+|[a-zA-Zа-яА-Я]+[ ][a-zA-Zа-яА-Я]+|([a-zA-Zа-яА-Я]+[\-][a-zA-Zа-яА-Я]+))+$/);
-    }
-
-    function valPhone() {
-        var expr = $("#inputPhone").val();
-        return expr.match(/^(\+380\d{9}|0\d{9})$/);
-    }
-
-    function valAddress() {
-        if ($("#inputAddress").val() === "") {
-            $(".address-help-block").show();
-            return false
-        } else $(".address-help-block").hide();
-        return true;
-    }
-
-    $(".next-step-button").click(function () {
-        if (valName() && valPhone() && valAddress()) {
-            PizzaCart.createOrder(function (err, data) {
-                if (err) {
-                    return console.log("Can't create order");
-                }
-                // alert("Order created");
-
-                LiqPayCheckout.init({
-                    data: data.data,
-                    signature: data.signature,
-                    embedTo: "#liqpay",
-                    mode: "embed"	//	popup	||	popup
-                }).on("liqpay.callback", function (data) {
-                    console.log(data.status);
-                    console.log(data);
-                    alert("Order status: " + data.status);
-                }).on("liqpay.ready", function (data) {
-                    //	ready
-                }).on("liqpay.close", function (data) {
-                    //	close
-                });
-            });
-        }
-    });
-
+    Order.initialiseOrder();
 
 });
-},{"./Pizza_List":2,"./pizza/PizzaCart":5,"./pizza/PizzaMenu":6}],5:[function(require,module,exports){
+
+},{"./Order":2,"./pizza/PizzaCart":6,"./pizza/PizzaMenu":7}],6:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -537,7 +573,7 @@ exports.createOrder = createOrder;
 
 exports.clearCart = clearCart();
 exports.PizzaSize = PizzaSize;
-},{"../API":1,"../Templates":3,"./Storage":7}],6:[function(require,module,exports){
+},{"../API":1,"../Templates":4,"./Storage":8}],7:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -554,7 +590,7 @@ var PizzaFilter = {
     Mushroom: 3,
     Sea: 4,
     Veg: 5
-}
+};
 
 function showPizzaList(list) {
     //Очищаємо старі піци в кошику
@@ -593,31 +629,31 @@ function filterPizza(filter) {
     else {
         if (filter === PizzaFilter.Mushroom) {
             Pizza_List.forEach(function (pizza) {
-                //Якщо піка відповідає фільтру
+                //Якщо піца відповідає фільтру
                 if (pizza.content.mushroom) pizza_shown.push(pizza);
             });
             $(".all-pizza-title").text("Mushroom pizzas");
         } else if (filter === PizzaFilter.Meat) {
             Pizza_List.forEach(function (pizza) {
-                //Якщо піка відповідає фільтру
+                //Якщо піца відповідає фільтру
                 if (pizza.type ===  'М’ясна піца') pizza_shown.push(pizza);
             });
             $(".all-pizza-title").text("Meat pizzas");
         } else if (filter === PizzaFilter.Pineapple) {
             Pizza_List.forEach(function (pizza) {
-                //Якщо піка відповідає фільтру
+                //Якщо піца відповідає фільтру
                 if (pizza.content.pineapple) pizza_shown.push(pizza);
             });
             $(".all-pizza-title").text("Pineapple pizzas");
         } else if (filter === PizzaFilter.Sea) {
             Pizza_List.forEach(function (pizza) {
-                //Якщо піка відповідає фільтру
+                //Якщо піца відповідає фільтру
                 if (pizza.content.ocean) pizza_shown.push(pizza);
             });
             $(".all-pizza-title").text("Sea pizzas");
         } else if (filter === PizzaFilter.Veg) {
             Pizza_List.forEach(function (pizza) {
-                //Якщо піка відповідає фільтру
+                //Якщо піца відповідає фільтру
                 if (pizza.type ===  'Вега піца') pizza_shown.push(pizza);
             });
             $(".all-pizza-title").text("Vegan pizzas");
@@ -637,7 +673,7 @@ function initialiseMenu() {
 
 exports.filterPizza = filterPizza;
 exports.initialiseMenu = initialiseMenu;
-},{"../Pizza_List":2,"../Templates":3,"./PizzaCart":5}],7:[function(require,module,exports){
+},{"../Pizza_List":3,"../Templates":4,"./PizzaCart":6}],8:[function(require,module,exports){
 var basil = require('basil.js');
 basil = new basil();
 
@@ -648,7 +684,7 @@ exports.write = function (key, value) {
 exports.read = function (key) {
     return basil.get(key);
 }
-},{"basil.js":8}],8:[function(require,module,exports){
+},{"basil.js":9}],9:[function(require,module,exports){
 (function () {
 	// Basil
 	var Basil = function (options) {
@@ -1049,9 +1085,9 @@ exports.read = function (key) {
 
 })();
 
-},{}],9:[function(require,module,exports){
-
 },{}],10:[function(require,module,exports){
+
+},{}],11:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -2033,7 +2069,7 @@ if (typeof window != 'undefined') {
   window.ejs = exports;
 }
 
-},{"../package.json":12,"./utils":11,"fs":9,"path":13}],11:[function(require,module,exports){
+},{"../package.json":13,"./utils":12,"fs":10,"path":14}],12:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -2202,7 +2238,7 @@ exports.cache = {
   }
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports={
   "_from": "ejs@^2.4.1",
   "_id": "ejs@2.7.4",
@@ -2272,7 +2308,7 @@ module.exports={
   "version": "2.7.4"
 }
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 (function (process){
 // .dirname, .basename, and .extname methods are extracted from Node.js v8.11.1,
 // backported and transplited with Babel, with backwards-compat fixes
@@ -2578,7 +2614,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":14}],14:[function(require,module,exports){
+},{"_process":15}],15:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -2764,4 +2800,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[4]);
+},{}]},{},[5]);

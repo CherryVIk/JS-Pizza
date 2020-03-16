@@ -14,7 +14,7 @@ var PizzaFilter = {
     Mushroom: 3,
     Sea: 4,
     Veg: 5
-}
+};
 
 function showPizzaList(list) {
     //Очищаємо старі піци в кошику
@@ -53,31 +53,31 @@ function filterPizza(filter) {
     else {
         if (filter === PizzaFilter.Mushroom) {
             Pizza_List.forEach(function (pizza) {
-                //Якщо піка відповідає фільтру
+                //Якщо піца відповідає фільтру
                 if (pizza.content.mushroom) pizza_shown.push(pizza);
             });
             $(".all-pizza-title").text("Mushroom pizzas");
         } else if (filter === PizzaFilter.Meat) {
             Pizza_List.forEach(function (pizza) {
-                //Якщо піка відповідає фільтру
+                //Якщо піца відповідає фільтру
                 if (pizza.type ===  'М’ясна піца') pizza_shown.push(pizza);
             });
             $(".all-pizza-title").text("Meat pizzas");
         } else if (filter === PizzaFilter.Pineapple) {
             Pizza_List.forEach(function (pizza) {
-                //Якщо піка відповідає фільтру
+                //Якщо піца відповідає фільтру
                 if (pizza.content.pineapple) pizza_shown.push(pizza);
             });
             $(".all-pizza-title").text("Pineapple pizzas");
         } else if (filter === PizzaFilter.Sea) {
             Pizza_List.forEach(function (pizza) {
-                //Якщо піка відповідає фільтру
+                //Якщо піца відповідає фільтру
                 if (pizza.content.ocean) pizza_shown.push(pizza);
             });
             $(".all-pizza-title").text("Sea pizzas");
         } else if (filter === PizzaFilter.Veg) {
             Pizza_List.forEach(function (pizza) {
-                //Якщо піка відповідає фільтру
+                //Якщо піца відповідає фільтру
                 if (pizza.type ===  'Вега піца') pizza_shown.push(pizza);
             });
             $(".all-pizza-title").text("Vegan pizzas");
