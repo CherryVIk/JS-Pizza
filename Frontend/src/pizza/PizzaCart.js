@@ -148,7 +148,7 @@ function createOrder(callback) {
         Name: $("#inputName").val(),
         Phone: $("#inputPhone").val(),
         Address: $("#inputAddress").val(),
-        Pizzas: Cart,
+        Pizzas: getPizzaInCart(),
         Sum: totalSum()
     },
         function (err, result) {
