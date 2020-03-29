@@ -1,12 +1,11 @@
 /**
  * Created by chaika on 09.02.16.
  */
-var Pizza_List = require('./data/Pizza_List');
-//That's real, lower ones are for testing
-// var LIQPAY_PUBLIC_KEY = i22365309913;
-// var LIQPAY_PRIVATE_KEY = Eb7QpuOd0So58cHKihQznNF5HLVbmwKd7t7Y0YSC;
-var LIQPAY_PUBLIC_KEY = sandbox_i31232987498;
-var LIQPAY_PRIVATE_KEY = sandbox_h3RU6oc0zRHGvRZFtFelxSSIIEBM0IXJSfvbdGU4;
+
+// let LIQPAY_PUBLIC_KEY = 'i22365309913';
+// let LIQPAY_PRIVATE_KEY = 'Eb7QpuOd0So58cHKihQznNF5HLVbmwKd7t7Y0YSC';
+var LIQPAY_PUBLIC_KEY = 'sandbox_i31232987498';
+var LIQPAY_PRIVATE_KEY = 'sandbox_h3RU6oc0zRHGvRZFtFelxSSIIEBM0IXJSfvbdGU4';
 
 var crypto = require('crypto');
 
@@ -28,12 +27,12 @@ exports.getPizzaList = function(req, res) {
 
 exports.createOrder = function(req, res) {
     var order_info = req.body;
-    console.log("Creating Order", order_info);
+    console.log("Створення замовлення", order_info);
     var descrip = "";
 
     order_info.Pizzas.forEach(function (t) {
         descrip += "<" + t.pizza.title + "> ";
-    })
+    });
 
     var order = {
         version: 3,

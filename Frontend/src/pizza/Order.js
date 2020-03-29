@@ -11,6 +11,7 @@ var contact_info = {
 
 function initialiseOrder(){
     var contact_info = Storage.read("info");
+    PizzaCart.clearCart();
     if (contact_info) {
         if (contact_info.name) {
             $("#inputName").val(contact_info.name);

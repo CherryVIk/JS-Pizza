@@ -3,12 +3,12 @@
  */
 exports.mainPage = function(req, res) {
     res.render('mainPage', {
-        pageTitle: 'Pizza choice'
+        pageTitle: 'Вибір піци'
     });
 };
 
 exports.orderPage = function(req, res) {
     res.render('orderPage', {
-        pageTitle: 'Confirming order'
+        pageTitle: 'Підтвердження замовлення'
     });
 };

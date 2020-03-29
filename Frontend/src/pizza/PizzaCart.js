@@ -118,6 +118,7 @@ function updateCart() {
             }
         });
 
+
         $node.find(".count-clear").click(function(){
             removeFromCart(cartItem);
             updateCart();
@@ -158,11 +159,10 @@ function createOrder(callback) {
 }
 
 function clearCart() {
-    $(".clear-order").click(function () {
-        Cart = [];
-        $(".order-count").text(0);
-        updateCart();
-    });
+    console.log("Clear order button");
+    Cart = [];
+    $(".order-count").text(0);
+    updateCart();
 }
 
 exports.removeFromCart = removeFromCart;

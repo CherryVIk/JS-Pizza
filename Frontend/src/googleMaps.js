@@ -28,7 +28,7 @@ function initialize() {
                 $(".order-adress").text(address);
                 $("#inputAddress").val(address);
             } else {
-                $(".order-adress").text("No address");
+                $(".order-adress").text("Немає адреси");
             }
         });
 
@@ -36,7 +36,7 @@ function initialize() {
             if(!err){
                 $(".order-time").text(data.duration.text);
             }else{
-                $(".order-time").text("Error");
+                $(".order-time").text("Помилка");
             }
         })
     });
@@ -51,7 +51,7 @@ function geocodeLatLng(latlng, callback) {
             var adress = results[1].formatted_address;
             callback(null, adress);
         } else {
-            callback(new Error("Can't find adress"));
+            callback(new Error("Can't find address"));
         }
     });
 }

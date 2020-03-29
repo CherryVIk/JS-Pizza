@@ -21,9 +21,9 @@ function getIngredientsArray(pizza) {
     <div class="thumbnail">
 
         <% if(pizza.is_new) { %>
-            <span class="label label-danger badge-new">New</span>
+            <span class="label label-danger badge-new">Нова</span>
         <% } else if(pizza.is_popular) {%>
-            <span class="label label-success badge-new">Popular</span>
+            <span class="label label-success badge-new">Популярна</span>
         <% } %>
         <img class="pizza-card-icon" src="<%= pizza.icon %>">
 
@@ -47,7 +47,7 @@ function getIngredientsArray(pizza) {
                         <h2>
                             <div class="price-menu">
                                 <%= pizza.small_size.price %>
-                                <div style="font-size: 14px;">uah.</div>
+                                <div style="font-size: 14px;">грн.</div>
                             </div>
                         </h2>
                         <a class="btn btn-warning buy-small bs" role="button">Купити</a>
@@ -64,7 +64,7 @@ function getIngredientsArray(pizza) {
                         <h2>
                             <div class="price-menu">
                                 <%= pizza.big_size.price %>
-                                <div style="font-size: 14px;">uah.</div>
+                                <div style="font-size: 14px;">грн.</div>
                             </div>
                         </h2>
                         <a class="btn btn-warning buy-big bb" role="button">Купити</a>
@@ -82,7 +82,7 @@ function getIngredientsArray(pizza) {
                         <h2>
                             <div class="price-menu">
                                 <%= pizza.small_size.price %>
-                                <div style="font-size: 14px;">uah.</div>
+                                <div style="font-size: 14px;">грн.</div>
                             </div>
                         </h2>
                         <a class="btn btn-warning buy-small bs" role="button">Купити</a>
@@ -100,7 +100,7 @@ function getIngredientsArray(pizza) {
                         <h2>
                             <div class="price-menu">
                                 <%= pizza.big_size.price %>
-                                <div style="font-size: 14px;">uah.</div>
+                                <div style="font-size: 14px;">грн.</div>
                             </div>
                         </h2>
                         <a class="btn btn-warning buy-big bb" role="button">Купити</a>

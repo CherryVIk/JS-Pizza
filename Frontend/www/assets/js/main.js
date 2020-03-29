@@ -353,6 +353,7 @@ $(function() {
 
     PizzaCart.initialiseCart();
 
+
     if (document.location.href == "http://localhost:5050/order.html") {
 
         var PizzaOrder = require('./pizza/Order');
@@ -362,6 +363,9 @@ $(function() {
 
         var PizzaMenu = require('./pizza/PizzaMenu');
         PizzaMenu.initialiseMenu();
+        $(".clear-order").click(function () {
+            PizzaCart.clearCart();
+        });
 
     }
 
@@ -381,6 +385,7 @@ var contact_info = {
 
 function initialiseOrder(){
     var contact_info = Storage.read("info");
+    PizzaCart.clearCart();
     if (contact_info) {
         if (contact_info.name) {
             $("#inputName").val(contact_info.name);
@@ -628,6 +633,7 @@ function updateCart() {
             }
         });
 
+
         $node.find(".count-clear").click(function(){
             removeFromCart(cartItem);
             updateCart();
@@ -669,6 +675,7 @@ function createOrder(callback) {
 
 function clearCart() {
     $(".clear-order").click(function () {
+        console.log("Clear order button");
         Cart = [];
         $(".order-count").text(0);
         updateCart();
