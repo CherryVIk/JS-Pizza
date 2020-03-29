@@ -159,10 +159,12 @@ function createOrder(callback) {
 }
 
 function clearCart() {
-    console.log("Clear order button");
-    Cart = [];
-    $(".order-count").text(0);
-    updateCart();
+    $(".clear-order").click(function () {
+        console.log("Clear order button");
+        Cart = [];
+        $(".order-count").text(0);
+        updateCart();
+    });
 }
 
 exports.removeFromCart = removeFromCart;
