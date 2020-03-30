@@ -11,7 +11,6 @@ var contact_info = {
 
 function initialiseOrder(){
     var contact_info = Storage.read("info");
-    PizzaCart.clearCart();
     if (contact_info) {
         if (contact_info.name) {
             $("#inputName").val(contact_info.name);
@@ -33,25 +32,21 @@ $(".nav-pills li").on("click", function () {
     $(this).addClass("active");
     var filt = $(this).find('a').data("filter");
     PizzaMenu.filterPizza(filt);
-})
+});
 
 $(".clear-order").click(function () {
     PizzaCart.clearCart();
 });
-
-$("#inputName").on("input", function () {
-    nameValid();
-});
-
-$("#inputPhone").on("input", function () {
+$("#inputName").keyup(nameValid);
+$("#inputPhone").keyup(function () {
     phoneValid();
+    console.log("key up is called");
+});
+$("#inputAddress").keyup(function (key) {
+
+    if (key.keyCode == 13) addressValid();
 
 });
-
-$("#inputAddress").on("input", function () {
-    addressValid();
-});
-
 function nameValid() {
     if (!/^[0-9A-Za-zА-Яа-яІіЇїЄєҐґ'/ -]+$/.test($("#inputName").val())) {
         $(".name-help-block").show();

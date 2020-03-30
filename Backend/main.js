@@ -17,7 +17,7 @@ function configureEndpoints(app) {
 
     //Сторінки
     //Головна сторінка
-    app.get('/index.html', pages.mainPage);
+    app.get('/', pages.mainPage);
 
     //Сторінка замовлення
     app.get('/order.html', pages.orderPage);

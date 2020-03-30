@@ -231,47 +231,69 @@ exports.PizzaCart_OneItemSubmit = ejs.compile("<div class=\"order-one ng-scope\"
 exports.PizzaCart_OneItem = ejs.compile("\n<div class=\"order-one ng-scope\">\n    <img class=\"img-aside pizza-icon\" alt=\"Піца\" src=\"<%= pizza.icon %>\">\n\n    <p class=\"bold mb10 ng-scope\">\n        <% if(pizza[size].size === 30){ %>\n            <span class=\"order-title\"><%= pizza.title %> (Мала)</span>\n        <% }else { %>\n            <span class=\"order-title\"><%= pizza.title %> (Велика)</span>\n        <% } %>\n    </p>\n    <div class=\"order-text\">\n        <img class=\"diagonal-image\" src=\"assets/images/size-icon.svg\">\n        <span class=\"diagonal\"><%= pizza[size].size %></span>\n        <img class=\"gram-image\" src=\"assets/images/weight.svg\">\n        <span class=\"gram\"><%= pizza[size].weight %></span>\n    </div>\n    <div class=\"price-box\">\n        <span class=\"price\"><%= pizza[size].price*quantity%>  грн.</span>\n        <a class=\"minus btn btn-xs btn-danger btn-circle\">\n            <i class=\"glyphicon glyphicon-minus icon-white\">\n            </i>\n        </a>\n        <span class=\"label order-pizza-count\" style=\"color:black;\"><%= quantity %></span>\n        <a class=\"plus btn btn-xs btn-success btn-circle\" >\n            <i class=\"glyphicon glyphicon-plus icon-white\">\n            </i>\n        </a>\n        <a class=\"count-clear btn btn-xs btn-default btn-circle\" >\n            <i class=\"glyphicon glyphicon-remove icon-white\">\n            </i>\n        </a>\n    </div>\n</div>");
 
 },{"ejs":12}],4:[function(require,module,exports){
-var old_marker = null;
+var homeMark;
 var map;
+var directionsDisplay;
 
 function initialize() {
 //Тут починаємо працювати з картою
+    directionsDisplay = new google.maps.DirectionsRenderer();
+    var point = new google.maps.LatLng(50.464379, 30.519131);
     var mapProp = {
-        center: new google.maps.LatLng(50.464379, 30.519131),
+        center: point,
         zoom: 11
     };
     var html_element = document.getElementById("googleMaps");
+
     map = new google.maps.Map(html_element, mapProp);
 
+    directionsDisplay.setMap(map);
+    directionsDisplay.setOptions({suppressMarkers: true});
     //show shop marker
-    var point = new google.maps.LatLng(50.464379, 30.519131);
-    var shopMarker = new google.maps.Marker({
+    var marker = new google.maps.Marker({
         position: point,
         map: map,
-        icon: "assets/images/map-icon.png"
+        icon: {
+            url: "assets/images/map-icon.png",
+            anchor : new google.maps.Point(30,30)
+        }
     });
     //Карта створена і показана
 
     google.maps.event.addListener(map, 'click', function (me) {
         var coordinates = me.latLng; //coordinates	- такий самий об’єкт як створений new google.maps.LatLng(...)
-        updateMarker(coordinates);
 
         geocodeLatLng(coordinates, function (err, address) {
             if (!err) {
-                $(".order-adress").text(address);
+                $(".order-address").text(address);
                 $("#inputAddress").val(address);
+                $(".address-help-block").hide();
+                if(homeMark) homeMark.setMap(null);
+
+                homeMark = new google.maps.Marker({
+                    position: coordinates,
+                    map: map,
+                    icon : {
+                        url: "assets/images/map-icon.png",
+                        anchor : new google.maps.Point(30,30)
+                    }
+                });
+                calculateRoute(point, coordinates, function (err, data) {
+                    if(!err){
+                        $(".order-time").text(data.duration.text);
+                    }else{
+                        console.log(err);
+                        $(".order-time").text("Помилка");
+                    }
+                });
+
             } else {
-                $(".order-adress").text("Немає адреси");
+                console.log(err);
+                $(".order-address").text("Немає адреси");
             }
         });
 
-        calculateRoute(point, coordinates, function (err, data) {
-            if(!err){
-                $(".order-time").text(data.duration.text);
-            }else{
-                $(".order-time").text("Помилка");
-            }
-        })
+
     });
 }
 
@@ -280,9 +302,9 @@ function geocodeLatLng(latlng, callback) {
 //Модуль за роботу з адресою
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({'location': latlng}, function (results, status) {
-        if (status === google.maps.GeocoderStatus.OK && results[1]) {
-            var adress = results[1].formatted_address;
-            callback(null, adress);
+        if (status === 'OK') {
+            var address = results[1].formatted_address;
+            callback(null, address);
         } else {
             callback(new Error("Can't find address"));
         }
@@ -302,28 +324,16 @@ function geocodeAddress(address, callback) {
     });
 }
 
-function updateMarker(coordinates) {
-    if (old_marker) {
-        old_marker.setMap(null);
-        old_marker = null;
-    }
-
-    old_marker = new google.maps.Marker({
-        position: coordinates,
-        map: map,
-        icon: "assets/images/home-icon.png"
-    });
-}
-
 function calculateRoute(A_latlng, B_latlng, callback) {
     var directionService = new google.maps.DirectionsService();
     directionService.route({
         origin: A_latlng,
         destination: B_latlng,
-        travelMode: google.maps.TravelMode["DRIVING"]
+        travelMode: "DRIVING"
     }, function (response, status) {
-        if (status == google.maps.DirectionsStatus.OK) {
+        if (status == 'OK') {
             var leg = response.routes[0].legs[0];
+            directionsDisplay.setDirections(response);
             callback(null, {
                 duration: leg.duration
             });
@@ -338,8 +348,8 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 exports.geocodeAddress = geocodeAddress;
 exports.geocodeLatLng = geocodeLatLng;
-exports.updateMarker = updateMarker;
 exports.calculateRoute = calculateRoute;
+exports.initialize = initialize;
 
 
 },{}],5:[function(require,module,exports){
@@ -382,7 +392,6 @@ var contact_info = {
 
 function initialiseOrder(){
     var contact_info = Storage.read("info");
-    PizzaCart.clearCart();
     if (contact_info) {
         if (contact_info.name) {
             $("#inputName").val(contact_info.name);
@@ -404,19 +413,27 @@ $(".nav-pills li").on("click", function () {
     $(this).addClass("active");
     var filt = $(this).find('a').data("filter");
     PizzaMenu.filterPizza(filt);
-})
+});
 
 $(".clear-order").click(function () {
     PizzaCart.clearCart();
 });
+$("#inputName").keyup(nameValid);
+$("#inputPhone").keyup(function () {
+    phoneValid();
+    console.log("key up is called");
+});
+$("#inputAddress").keyup(function (key) {
 
+    if (key.keyCode == 13) addressValid();
+
+});
 $("#inputName").on("input", function () {
     nameValid();
 });
 
 $("#inputPhone").on("input", function () {
     phoneValid();
-
 });
 
 $("#inputAddress").on("input", function () {
@@ -671,10 +688,12 @@ function createOrder(callback) {
 }
 
 function clearCart() {
-    console.log("Clear order button");
-    Cart = [];
-    $(".order-count").text(0);
-    updateCart();
+    $(".clear-order").click(function () {
+        console.log("Clear order button");
+        Cart = [];
+        $(".order-count").text(0);
+        updateCart();
+    });
 }
 
 exports.removeFromCart = removeFromCart;
