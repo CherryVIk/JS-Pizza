@@ -1,6 +1,6 @@
 var PizzaMenu = require('./PizzaMenu');
 var PizzaCart = require('./PizzaCart');
-var GoogleMaps = require('../googleMaps');
+var googleMaps = require('../googleMaps');
 var Storage = require('./Storage');
 
 var contact_info = {
@@ -78,12 +78,12 @@ function phoneValid() {
 }
 
 function addressValid() {
-    GoogleMaps.geocodeAddress($("#inputAddress").val(), function (err, location) {
+    googleMaps.geocodeAddress($("#inputAddress").val(), function (err, location) {
         if(err){
             alert("Не вдалося встановити адресу.");
             $(".address-help-block").show();
         }else {
-            GoogleMaps.calculateRoute(new google.maps.LatLng(50.464379, 30.519131), location, function (err, data) {
+            googleMaps.calculateRoute(new google.maps.LatLng(50.464379, 30.519131), location, function (err, data) {
                 if (!err)
                     $(".order-time").text(data.duration.text);
                 else {
@@ -114,8 +114,8 @@ $(".next-step-button").click(function () {
             LiqPayCheckout.init({
                 data: data.data,
                 signature: data.signature,
-                embedTo: "#liqpay",
-                mode: "popup"	//	embed	||	popup
+                embedTo: "#liqpay_checkout",
+                mode: "embed"	//	embed	||	popup
             }).on("liqpay.callback", function (data) {
                 console.log(data.status);
                 console.log(data);

@@ -16,6 +16,7 @@ var Cart = [];
 
 //HTML едемент куди будуть додаватися піци
 var $cart = $("#cart");
+var $header_cart = $(".top-part");
 
 function addToCart(pizza, size) {
     //Додавання однієї піци в кошик покупок
@@ -118,9 +119,12 @@ function updateCart() {
             }
         });
 
-
         $node.find(".count-clear").click(function(){
             removeFromCart(cartItem);
+            updateCart();
+        });
+        $header_cart.find(".clear-order").click(function () {
+            clearCart();
             updateCart();
         });
 
@@ -144,7 +148,6 @@ function updateCart() {
 }
 
 function createOrder(callback) {
-
     API.createOrder({
         Name: $("#inputName").val(),
         Phone: $("#inputPhone").val(),
@@ -159,12 +162,13 @@ function createOrder(callback) {
 }
 
 function clearCart() {
-    $(".clear-order").click(function () {
-        console.log("Clear order button");
-        Cart = [];
-        $(".order-count").text(0);
-        updateCart();
-    });
+    Cart.splice(0, Cart.length);
+    // $(".clear-order").click(function () {
+    //     console.log("Clear order button");
+    //     Cart = [];
+    //     $(".order-count").text(0);
+    //     updateCart();
+    // });
 }
 
 exports.removeFromCart = removeFromCart;
