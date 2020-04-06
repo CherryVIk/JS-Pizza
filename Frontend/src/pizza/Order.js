@@ -27,26 +27,6 @@ function initialiseOrder(){
     }
 }
 
-$(".nav-pills li").on("click", function () {
-    $(".nav-pills li").removeClass("active");
-    $(this).addClass("active");
-    var filt = $(this).find('a').data("filter");
-    PizzaMenu.filterPizza(filt);
-});
-
-$(".clear-order").click(function () {
-    PizzaCart.clearCart();
-});
-$("#inputName").keyup(nameValid);
-$("#inputPhone").keyup(function () {
-    phoneValid();
-    console.log("key up is called");
-});
-$("#inputAddress").keyup(function (key) {
-
-    if (key.keyCode == 13) addressValid();
-
-});
 function nameValid() {
     if (!/^[0-9A-Za-zА-Яа-яІіЇїЄєҐґ'/ -]+$/.test($("#inputName").val())) {
         $(".name-help-block").show();
@@ -58,10 +38,7 @@ function nameValid() {
         Storage.write("info", contact_info);
         return true;
     }
-    // var expr = $("#inputName").val();
-    // // return expr.match(/^[0-9A-Za-zА-Яа-яІіЇїЄєҐґ'/ -]+$/);
-    // return expr.match(/^([a-zA-Zа-яА-Я]+|[a-zA-Zа-яА-Я]+[ ][a-zA-Zа-яА-Я]+|([a-zA-Zа-яА-Я]+[\-][a-zA-Zа-яА-Я]+))+$/);
-}
+   }
 
 function phoneValid() {
     if ((!/^[+]?(38)?([0-9]{10})$/.test($("#inputPhone").val()) && (!/^0?([0-9]{9})$/.test($("#inputPhone").val())))) {
@@ -73,15 +50,16 @@ function phoneValid() {
         Storage.write("info", contact_info);
         return true;
     }
-    // var expr = $("#inputPhone").val();
-    // return expr.match(/^(\+380\d{9}|0\d{9})$/);
 }
 
 function addressValid() {
     googleMaps.geocodeAddress($("#inputAddress").val(), function (err, location) {
         if(err){
+            console.log($("#inputAddress").val());
             alert("Не вдалося встановити адресу.");
             $(".address-help-block").show();
+            $(".order-time").text("не відомо");
+            $(".order-adress").text("не відомо");
         }else {
             googleMaps.calculateRoute(new google.maps.LatLng(50.464379, 30.519131), location, function (err, data) {
                 if (!err)
@@ -90,17 +68,19 @@ function addressValid() {
                     console.log(err);
                 }
             });
+            $(".address-help-block").hide();
+
             contact_info.address = $("#inputAddress").val();
             Storage.write("info", contact_info);
-            $(".address-help-block").hide();
-            $(".order-address").text($("#inputAddress").val());
+
+            $(".order-adress").text($("#inputAddress").val());
         }
     });
 }
 
 $(".next-step-button").click(function () {
     addressValid();
-    var valid = nameValid() && phoneValid() && $(".order-time").text() != "unknown";
+    var valid = nameValid() && phoneValid() && $(".order-time").text() != "невідомо";
 
     if (valid) {
 
@@ -115,7 +95,7 @@ $(".next-step-button").click(function () {
                 data: data.data,
                 signature: data.signature,
                 embedTo: "#liqpay_checkout",
-                mode: "embed"	//	embed	||	popup
+                mode: "popup"	//	embed	||	popup
             }).on("liqpay.callback", function (data) {
                 console.log(data.status);
                 console.log(data);
@@ -129,6 +109,17 @@ $(".next-step-button").click(function () {
     }else {
         alert("Fill all fields!");
     }
+
+});
+
+$("#inputName").keyup(nameValid);
+$("#inputPhone").keyup(function () {
+    phoneValid();
+    console.log("key up is called");
+});
+$("#inputAddress").keyup(function (key) {
+
+    if (key.keyCode == 13) addressValid();
 
 });
 

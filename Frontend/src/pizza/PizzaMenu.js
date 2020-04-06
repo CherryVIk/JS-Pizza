@@ -47,7 +47,7 @@ function filterPizza(filter) {
         Pizza_List.forEach(function(pizza){
             pizza_shown.push(pizza);
         });
-        $(".all-pizza-title").text("All pizzas");
+        $(".all-pizza-title").text("Усі піци");
         $(".pizza-count").text("8");
     }
     else {
@@ -56,31 +56,31 @@ function filterPizza(filter) {
                 //Якщо піца відповідає фільтру
                 if (pizza.content.mushroom) pizza_shown.push(pizza);
             });
-            $(".all-pizza-title").text("Mushroom pizzas");
+            $(".all-pizza-title").text("З грибами");
         } else if (filter === PizzaFilter.Meat) {
             Pizza_List.forEach(function (pizza) {
                 //Якщо піца відповідає фільтру
                 if (pizza.type ===  'М’ясна піца') pizza_shown.push(pizza);
             });
-            $(".all-pizza-title").text("Meat pizzas");
+            $(".all-pizza-title").text("З м'ясом");
         } else if (filter === PizzaFilter.Pineapple) {
             Pizza_List.forEach(function (pizza) {
                 //Якщо піца відповідає фільтру
                 if (pizza.content.pineapple) pizza_shown.push(pizza);
             });
-            $(".all-pizza-title").text("Pineapple pizzas");
+            $(".all-pizza-title").text("З ананасами");
         } else if (filter === PizzaFilter.Sea) {
             Pizza_List.forEach(function (pizza) {
                 //Якщо піца відповідає фільтру
                 if (pizza.content.ocean) pizza_shown.push(pizza);
             });
-            $(".all-pizza-title").text("Sea pizzas");
+            $(".all-pizza-title").text("З морепродуктами");
         } else if (filter === PizzaFilter.Veg) {
             Pizza_List.forEach(function (pizza) {
                 //Якщо піца відповідає фільтру
                 if (pizza.type ===  'Вега піца') pizza_shown.push(pizza);
             });
-            $(".all-pizza-title").text("Vegan pizzas");
+            $(".all-pizza-title").text("Для веганів");
         }
         $(".pizza-count").text(pizza_shown.length);
 
@@ -89,6 +89,12 @@ function filterPizza(filter) {
     //Показати відфільтровані піци
     showPizzaList(pizza_shown);
 }
+$(".nav-pills li").on("click", function () {
+    $(".nav-pills li").removeClass("active");
+    $(this).addClass("active");
+    var filt = $(this).find('a').data("filter");
+    filterPizza(filt);
+});
 
 function initialiseMenu() {
     //Показуємо усі піци

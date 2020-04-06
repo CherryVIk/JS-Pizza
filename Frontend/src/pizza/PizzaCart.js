@@ -163,13 +163,10 @@ function createOrder(callback) {
 
 function clearCart() {
     Cart.splice(0, Cart.length);
-    // $(".clear-order").click(function () {
-    //     console.log("Clear order button");
-    //     Cart = [];
-    //     $(".order-count").text(0);
-    //     updateCart();
-    // });
 }
+$(".clear-order").click(function () {
+    clearCart();
+});
 
 exports.removeFromCart = removeFromCart;
 exports.addToCart = addToCart;
