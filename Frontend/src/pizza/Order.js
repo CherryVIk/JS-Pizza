@@ -26,14 +26,18 @@ function initialiseOrder(){
         }
     }
 }
-
+var changeBackground = function (element,color,display){
+    element.find(".form-control").css("background", color);
+    element.find(".help-block").css("display", display);
+};
 function nameValid() {
-    if (!/^[0-9A-Za-zА-Яа-яІіЇїЄєҐґ'/ -]+$/.test($("#inputName").val())) {
-        $(".name-help-block").show();
+    var expr = $("#inputName").val();
+    if (!/^[A-Za-zА-Яа-яІіЇїЄєҐґ'/ -]+$/.test(expr)) {
+        changeBackground($(".name-group"),'rgba(255,7,18,0.36)',"inline-block");
         return false;
     }
     else {
-        $(".name-help-block").hide();
+        changeBackground($(".name-group"),'rgba(100,252,38,0.37)',"none");
         contact_info.name = $("#inputName").val();
         Storage.write("info", contact_info);
         return true;
@@ -41,11 +45,12 @@ function nameValid() {
    }
 
 function phoneValid() {
-    if ((!/^[+]?(38)?([0-9]{10})$/.test($("#inputPhone").val()) && (!/^0?([0-9]{9})$/.test($("#inputPhone").val())))) {
-        $(".phone-help-block").show();
+    var expr = $("#inputPhone").val();
+    if ((!/^[+]?(38)?([0-9]{10})$/.test(expr) && (!/^0?([0-9]{9})$/.test(expr)))) {
+        changeBackground($(".phone-group"),'rgba(255,7,18,0.36)',"inline-block");
         return false;
     }else {
-        $(".phone-help-block").hide();
+        changeBackground($(".phone-group"),'rgba(100,252,38,0.37)',"none");
         contact_info.phone = $("#inputPhone").val();
         Storage.write("info", contact_info);
         return true;
@@ -57,7 +62,7 @@ function addressValid() {
         if(err){
             console.log($("#inputAddress").val());
             alert("Не вдалося встановити адресу.");
-            $(".address-help-block").show();
+            changeBackground($(".address-group"),'rgba(255,7,18,0.36)',"inline-block");
             $(".order-time").text("не відомо");
             $(".order-adress").text("не відомо");
         }else {
@@ -68,7 +73,7 @@ function addressValid() {
                     console.log(err);
                 }
             });
-            $(".address-help-block").hide();
+            changeBackground($(".address-group"),'rgba(100,252,38,0.37)',"none");
 
             contact_info.address = $("#inputAddress").val();
             Storage.write("info", contact_info);
@@ -83,13 +88,12 @@ $(".next-step-button").click(function () {
     var valid = nameValid() && phoneValid() && $(".order-time").text() != "невідомо";
 
     if (valid) {
-
         PizzaCart.createOrder(function (err, data) {
             if (err) {
-                alert("Can't create order");
-                return console.log("Can't create order in API")
+                alert("Замовлення не створено");
+                return console.log("Замовлення не створено в API")
             }
-            alert("Order created");
+            alert("Замовлення створено");
 
             LiqPayCheckout.init({
                 data: data.data,
@@ -107,18 +111,14 @@ $(".next-step-button").click(function () {
             });
         });
     }else {
-        alert("Fill all fields!");
+        alert("Заповніть усі поля!");
     }
 
 });
 
-$("#inputName").keyup(nameValid);
-$("#inputPhone").keyup(function () {
-    phoneValid();
-    console.log("key up is called");
-});
+$("#inputName").on("input",nameValid);
+$("#inputPhone").on("input",phoneValid);
 $("#inputAddress").keyup(function (key) {
-
     if (key.keyCode == 13) addressValid();
 
 });
