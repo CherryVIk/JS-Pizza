@@ -4,7 +4,6 @@ var homeMarker;
 var directionsDisplay;
 
 function initialize() {
-//Тут починаємо працювати з картою
 
     //Тут починаємо працювати з картою
 
